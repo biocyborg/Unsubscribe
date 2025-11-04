@@ -1,0 +1,23 @@
+[
+  {
+    "store": "AliExpress",
+    "title": "Up to 50% OFF Tech & Gadgets",
+    "code": "BFTECH50",
+    "expire": "Valid until Nov 30",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/2/29/AliExpress_logo.svg"
+  },
+  {
+    "store": "Shein",
+    "title": "Extra 20% OFF all fashion items",
+    "code": "STYLE20",
+    "expire": "Valid until Dec 1",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/e/e1/SHEIN_Logo.svg"
+  },
+  {
+    "store": "iHerb",
+    "title": "15% OFF Vitamins and Supplements",
+    "code": "HEALTH15",
+    "expire": "Valid until Dec 5",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/2/22/IHerb_logo.svg"
+  }
+]
