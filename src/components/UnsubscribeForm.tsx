@@ -1,9 +1,23 @@
 "use client";
+
 import { useState } from "react";
 import { motion } from "framer-motion";
 
 export default function UnsubscribeForm() {
   const [submitted, setSubmitted] = useState(false);
+  const [email, setEmail] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const res = await fetch("/api/unsubscribe", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+
+    if (res.ok) setSubmitted(true);
+  };
 
   return (
     <motion.div
@@ -12,17 +26,11 @@ export default function UnsubscribeForm() {
       className="max-w-md mx-auto text-center bg-white/5 rounded-2xl p-6 backdrop-blur-lg shadow-lg"
     >
       {!submitted ? (
-        <form
-          name="unsubscribe"
-          method="POST"
-          data-netlify="true"
-          onSubmit={() => setSubmitted(true)}
-          className="flex flex-col gap-4"
-        >
-          <input type="hidden" name="form-name" value="unsubscribe" />
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input
             type="email"
-            name="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
             placeholder="Your email address"
             className="p-3 rounded-md bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-400"
