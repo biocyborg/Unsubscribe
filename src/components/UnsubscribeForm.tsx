@@ -5,6 +5,30 @@ import { motion } from "framer-motion";
 export default function UnsubscribeForm() {
   const [submitted, setSubmitted] = useState(false);
 
+ const handleFormSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
+    event.preventDefault();
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    try {
+      await fetch("/__forms.html", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(formData as any).toString(),
+      });
+
+setSubmitted(true)
+      form.reset();
+    } catch (error) {
+      console.error("Form submission failed:", error);
+      alert("Something went wrong, please try again later.");
+    }
+  };
+  
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -15,8 +39,7 @@ export default function UnsubscribeForm() {
         <form
           name="unsubscribe"
           method="POST"
-          data-netlify="true"
-          onSubmit={() => setSubmitted(true)}
+          onSubmit={handleFormSubmit}
           className="flex flex-col gap-4"
         >
           <input type="hidden" name="form-name" value="unsubscribe" />
