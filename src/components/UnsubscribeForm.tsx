@@ -15,7 +15,7 @@ export default function UnsubscribeForm() {
         <form
           name="unsubscribe"
           method="POST"
-          netlify
+          data-netlify="true"
           onSubmit={() => setSubmitted(true)}
           className="flex flex-col gap-4"
         >
