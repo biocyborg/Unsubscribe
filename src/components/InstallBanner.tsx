@@ -16,7 +16,7 @@ export default function InstallBanner() {
         shop online.
       </p>
       <a
-        href="https://chrome.google.com/webstore/detail/Elktop"
+        href="https://chromewebstore.google.com/detail/eutopia-aliexpress-discou/pgeibfelcomlphhgnkihiibnhpadaddc"
         target="_blank"
         rel="noopener noreferrer"
         className="inline-block bg-white text-amber-600 font-bold px-6 py-3 rounded-lg hover:scale-105 hover:shadow-lg transition-all"
