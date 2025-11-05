@@ -1,11 +1,43 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 export default function UnsubscribeForm() {
   const [submitted, setSubmitted] = useState(false);
+  const [email, setEmail] = useState("");
 
- const handleFormSubmit = async (
+  function deleteUrlParams(keys: string[] | null = null): void {
+    const url = new URL(window.location.href);
+    if (Array.isArray(keys)) {
+      keys.forEach((key) => url.searchParams.delete(key));
+    } else {
+      url.search = "";
+    }
+    window.history.pushState({}, "", url.toString());
+  }
+
+  function init() {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const emailParam = params.get("email");
+      console.log(emailParam, 'emailParam');
+      
+      if (emailParam) {
+        setEmail(emailParam);
+        deleteUrlParams()
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    init();
+  }, []);
+
+  // ✅ 表单提交处理
+  const handleFormSubmit = async (
     event: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     event.preventDefault();
@@ -20,14 +52,13 @@ export default function UnsubscribeForm() {
         body: new URLSearchParams(formData as any).toString(),
       });
 
-setSubmitted(true)
+      setSubmitted(true);
       form.reset();
     } catch (error) {
       console.error("Form submission failed:", error);
       alert("Something went wrong, please try again later.");
     }
   };
-  
 
   return (
     <motion.div
@@ -47,6 +78,8 @@ setSubmitted(true)
             type="email"
             name="email"
             required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             placeholder="Your email address"
             className="p-3 rounded-md bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-400"
           />
@@ -63,9 +96,12 @@ setSubmitted(true)
           animate={{ opacity: 1, y: 0 }}
           className="text-white"
         >
-          <h2 className="text-2xl font-semibold mb-2">You're unsubscribed 🎉</h2>
+          <h2 className="text-2xl font-semibold mb-2">
+            You're unsubscribed 🎉
+          </h2>
           <p className="text-gray-300 mb-4">
-            We’re sad to see you go, but you can still enjoy our best deals below.
+            We’re sad to see you go, but you can still enjoy our best deals
+            below.
           </p>
         </motion.div>
       )}
