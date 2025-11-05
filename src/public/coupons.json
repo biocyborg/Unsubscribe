@@ -1,23 +1,14 @@
 [
   {
     "store": "AliExpress",
-    "title": "Up to 50% OFF Tech & Gadgets",
-    "code": "BFTECH50",
-    "expire": "Valid until Nov 30",
     "logo": "https://cdn.admitad-connect.com/campaign/images/2025/1/14/6115-e9b6f3723f58304b.svg"
   },
   {
     "store": "Trip",
-    "title": "Book hassle-free airport rides on Trip.com and save instantly! Promo Code: TRIPTRANSFER5",
-    "code": "TRIPTRANSFER5",
-    "expire": "Valid until Dec 1",
     "logo": "https://cdn.admitad-connect.com/campaign/images/2020/10/14/23733-2a3d1f32bb748535.png"
   },
   {
     "store": "italki",
-    "title": "15% OFF Vitamins and Supplements",
-    "code": "HEALTH15",
-    "expire": "Valid until Dec 5",
     "logo": "https://cdn.admitad-connect.com/campaign/images/2024/11/11/24736-096c8ef1af3efff0.svg"
   }
 ]

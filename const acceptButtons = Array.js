@@ -20,3 +20,4 @@ async function clickAcceptButtons(buttons) {
 }
 
 clickAcceptButtons(acceptButtons);
+

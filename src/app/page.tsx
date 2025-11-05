@@ -1,18 +1,92 @@
 "use client";
 
-// import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import CouponCard from "../components/CouponCard";
 import UnsubscribeForm from "../components/UnsubscribeForm";
 import InstallBanner from "../components/InstallBanner";
 
-import coupons from '../public/coupons.json'
+import { v4 as uuidv4 } from "uuid";
+import { GrowthBook } from "@growthbook/growthbook-react";
+
+import couponName from "../public/coupons.json";
 
 export default function UnsubscribePage() {
-  // const [coupons, setCoupons] = useState<any[]>([]);
+  const [coupons, setCoupons] = useState<
+    {
+      condition: string;
+      couponCode: string;
+      discounts: string;
+      time: string;
+    }[]
+  >([]);
 
-  // useEffect(() => {
-  //  console.log(coupons, 'coupons');
-  // }, []);
+  async function delay(time: number) {
+    return new Promise((resolve) => setTimeout(resolve, time));
+  }
+
+  async function init() {
+    try {
+      console.log(
+        couponName,
+        "couponName",
+        process.env.NEXT_PUBLIC_GROWTH_BOOK
+      );
+
+      const id = uuidv4();
+      const growthbook = new GrowthBook({
+        apiHost: "https://cdn.growthbook.io",
+        clientKey: process.env.NEXT_PUBLIC_GROWTH_BOOK,
+        enableDevMode: true,
+        trackingCallback: (experiment, result) => {
+          // TODO: Use your real analytics tracking system
+          console.log("Viewed Experiment", {
+            variations: JSON.stringify(experiment.variations),
+            weights: experiment.weights,
+            value: result.value.key,
+            experiment_id: experiment.key,
+            variation_id: result.variationId,
+            id: id,
+          });
+        },
+      });
+
+      growthbook.init?.();
+      await delay(500);
+      const featureValue = growthbook.getFeatureValue(
+        "ALIEXPRESS_PLATFORM_COUPON",
+        []
+      );
+      growthbook.destroy?.();
+
+      console.log(featureValue, "featureValue");
+
+      if (featureValue.length) {
+        const global = (
+          featureValue as {
+            name: string;
+            title: string;
+            codes: {
+              condition: string;
+              couponCode: string;
+              discounts: string;
+              time: string;
+            }[];
+          }[]
+        ).find((item) => item.name === "global");
+        if (global?.codes) {
+          const { codes } = global;
+          setCoupons(codes)
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    init();
+  });
+  console.log("coupons");
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white px-6 py-12 flex flex-col items-center">
@@ -29,8 +103,8 @@ export default function UnsubscribePage() {
             🔥 Featured Coupons
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {coupons.map((c, i) => (
-              <CouponCard key={i} coupon={c} />
+            {coupons.slice(0,3).map((c, i) => (
+              <CouponCard key={i} coupon={c} couponName={couponName} />
             ))}
           </div>
         </section>
